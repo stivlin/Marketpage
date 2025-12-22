@@ -4,7 +4,7 @@ from selenium.webdriver.support import expected_conditions as EC
 
 from selenium.common.exceptions import NoAlertPresentException, TimeoutException
 from selenium.webdriver.support.wait import WebDriverWait
-
+from pages.locators import BasePageLocators
 
 class BasePage:
 
@@ -13,25 +13,22 @@ class BasePage:
         self.url = url
         self.browser.implicitly_wait(timeout)
 
-    def open(self):
-        self.browser.get(self.url)
+    def go_to_login_page(self):
+        link = self.browser.find_element(*BasePageLocators.LOGIN_LINK)
+        link.click()
 
-    def solve_quiz_and_get_code(self):
-        alert = self.browser.switch_to.alert
-        x = alert.text.split(" ")[2]
-        answer = str(math.log(abs((12 * math.sin(float(x))))))
-        print(answer)
-        alert.send_keys(answer)
-        alert.accept()
-        self.browser.implicitly_wait(10)
+    def go_to_basket_page(self):
+        link = self.browser.find_element(*BasePageLocators.BASKET_BUTTON)
+        link.click()
+
+    def is_element_present(self, how, what):
         try:
-            alert = self.browser.switch_to.alert
-            alert_text = alert.text
-            print(f"Your code : {alert_text}")
-            alert.accept()
-            time.sleep(5)
-        except NoAlertPresentException:
-            print("No second alert present")
+            WebDriverWait(self.browser, 4).until(
+                EC.presence_of_element_located((how, what))
+            )
+        except TimeoutException:
+            return False
+        return True
 
     def is_not_element_present(self,how, what, timeout=4):
         try:
@@ -49,3 +46,29 @@ class BasePage:
         except TimeoutException:
             return False
         return True
+
+    def open(self):
+        self.browser.get(self.url)
+
+    def should_be_login_link(self):
+        assert self.is_element_present(*BasePageLocators.LOGIN_LINK), "Login link is not present."
+
+    def should_be_login_form(self):
+        assert self.is_element_present(*BasePageLocators.LOGIN_TEXT), "Login text is not present."
+
+    def solve_quiz_and_get_code(self):
+        alert = self.browser.switch_to.alert
+        x = alert.text.split(" ")[2]
+        answer = str(math.log(abs((12 * math.sin(float(x))))))
+        print(answer)
+        alert.send_keys(answer)
+        alert.accept()
+        self.browser.implicitly_wait(10)
+        try:
+            alert = self.browser.switch_to.alert
+            alert_text = alert.text
+            print(f"Your code : {alert_text}")
+            alert.accept()
+            time.sleep(5)
+        except NoAlertPresentException:
+            print("No second alert present")

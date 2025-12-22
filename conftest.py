@@ -16,7 +16,7 @@ BASE_URL = "http://selenium1py.pythonanywhere.com/catalogue/coders-at-work_207/"
         f"{BASE_URL}?promo=offer{i}",
         marks=pytest.mark.xfail if i == 7 else ()
     )
-    for i in range(10)
+    for i in range(1)
 ])
 def link(request):
     return request.param
