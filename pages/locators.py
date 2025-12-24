@@ -16,3 +16,12 @@ class BasePageLocators():
 
     BASKET_BUTTON = (By.CSS_SELECTOR, ".btn-group a")
     EMPTY_BASKET = (By.CSS_SELECTOR, "#content_inner p")
+
+class LoginPageLocators():
+    USER_ICON = (By.CSS_SELECTOR, ".icon-user")
+    REGISTER_SUCCESS = (By.CSS_SELECTOR, ".alert-success .wicon")
+    # assert Thanks for registering!
+    EMAIL_ADDRESS = (By.CSS_SELECTOR, "#id_registration-email")
+    PASSWORD = (By.CSS_SELECTOR, "#id_registration-password1")
+    PASSWORD_CONFIRM = (By.CSS_SELECTOR, "#id_registration-password2")
+    BUTTON = (By.CSS_SELECTOR, "button[name='registration_submit']")
