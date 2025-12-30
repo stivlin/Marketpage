@@ -1,7 +1,6 @@
 import math
 import time
 from selenium.webdriver.support import expected_conditions as EC
-
 from selenium.common.exceptions import NoAlertPresentException, TimeoutException
 from selenium.webdriver.support.wait import WebDriverWait
 from pages.locators import BasePageLocators, LoginPageLocators

@@ -8,11 +8,15 @@ BASE_URL = "http://selenium1py.pythonanywhere.com/catalogue/coders-at-work_207/"
 
 
 @pytest.fixture
-def browser():
-    browser = webdriver.Chrome()
+def browser(language):
+    options = webdriver.ChromeOptions()
+    options.add_experimental_option(
+        "prefs", {"intl.accept_languages": language}
+    )
 
+    browser = webdriver.Chrome(options=options)
     yield browser
-    print('\nend chrome browser')
+    print("\nend chrome browser")
     browser.quit()
 
 @pytest.fixture
@@ -34,7 +38,19 @@ def register_user(browser):
         f"{BASE_URL}?promo=offer{i}",
         marks=pytest.mark.xfail if i == 7 else ()
     )
-    for i in range(1)
+    for i in range(10)
 ])
 def link(request):
     return request.param
+
+@pytest.fixture
+def language(request):
+    return request.config.getoption("--language")
+
+def pytest_addoption(parser):
+    parser.addoption(
+        "--language",
+        action="store",
+        default="en-gb",
+        help="Choose language: en-gb, ru, es, etc."
+    )
